@@ -19,35 +19,35 @@ using grpc::ClientWriter;
 using grpc::Status;
 
 int main(int argc, char** argv) {
-	std::cout << "Hello, world!" << std::endl;
+  std::cout << "Hello, world!" << std::endl;
 
-	auto channel = grpc::CreateChannel("localhost:50051", grpc::InsecureChannelCredentials());
-	std::unique_ptr<MeasurementService::Stub> stub = MeasurementService::NewStub(channel);
+  auto channel = grpc::CreateChannel("localhost:50051", grpc::InsecureChannelCredentials());
+  std::unique_ptr<MeasurementService::Stub> stub = MeasurementService::NewStub(channel);
 
-	// random
-	std::random_device rd;
+  // random
+  std::random_device rd;
   std::mt19937 mt(rd());
   std::uniform_real_distribution<double> dist(0.0, 1.0);
 
-	while(true) {
+  while(true) {
 
-		Measurement m;
+    Measurement m;
     m.set_weight(dist(mt));
     m.set_humidity(dist(mt));
     m.set_color(dist(mt));
 
-		OK ok;
+    OK ok;
 
-		ClientContext context;
-		Status status = stub->NewMeasurement(&context, m, &ok);
-		if (!status.ok()) {
+    ClientContext context;
+    Status status = stub->NewMeasurement(&context, m, &ok);
+    if (!status.ok()) {
       std::cout << "RPC Failure: " << status.error_message()
-                << ":" << status.error_details() << std::endl;
-		}		
-	
-		sleep(1);  
-	}
+        << ":" << status.error_details() << std::endl;
+    }		
 
-	return 0;
+    sleep(1);  
+  }
+
+  return 0;
 }
 
