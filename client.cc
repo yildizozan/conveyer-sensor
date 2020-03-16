@@ -34,20 +34,20 @@ int main(int argc, char** argv) {
 		Measurement m;
     m.set_weight(dist(mt));
     m.set_humidity(dist(mt));
-		m.set_color(dist(mt));
+    m.set_color(dist(mt));
 
 		OK ok;
 
 		ClientContext context;
 		Status status = stub->NewMeasurement(&context, m, &ok);
 		if (!status.ok()) {
-    	std::cout << "RPC Failure: " << status.error_message()
-              << ":" << status.error_details() << std::endl;
-    	return 1;
+      std::cout << "RPC Failure: " << status.error_message()
+                << ":" << status.error_details() << std::endl;
 		}		
 	
 		sleep(1);  
 	}
+
 	return 0;
 }
 
