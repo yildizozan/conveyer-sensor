@@ -1,17 +1,17 @@
 syntax = "proto3";
 
 service MeasurementService {
-    rpc NewMeasurement (Measurement) returns (OK) {
-    }
+  rpc NewMeasurement (Measurement) returns (OK) {
+  }
 }
 
 message Measurement {
-    float weight = 1;
-    float humidity = 2;
-    float color = 3;
+  float weight = 1;
+  float humidity = 2;
+  float color = 3;
 }
 
 message OK {
-    bool success = 1;
+  bool success = 1;
 }
 
