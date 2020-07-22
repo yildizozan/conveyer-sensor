@@ -2,6 +2,9 @@
 
 #include <iostream>
 #include <random>
+#include <string>
+#include <cstdlib>
+#include <cstdio>
 
 #include <grpc/grpc.h>
 #include <grpcpp/channel.h>
@@ -11,6 +14,10 @@
 
 #include "measurement.grpc.pb.h"
 
+using std::cout;
+using std::endl;
+using std::string;
+
 using grpc::Channel;
 using grpc::ClientContext;
 using grpc::ClientReader;
@@ -19,9 +26,12 @@ using grpc::ClientWriter;
 using grpc::Status;
 
 int main(int argc, char** argv) {
-  std::cout << "Hello, world!" << std::endl;
+  cout << "Hello, world!" << endl;
+  cout << "Starting to send datas" << endl;
 
-  auto channel = grpc::CreateChannel("localhost:50051", grpc::InsecureChannelCredentials());
+  string connectionString = std::getenv("GRPC_SERVER");
+  
+  auto channel = grpc::CreateChannel(connectionString, grpc::InsecureChannelCredentials());
   std::unique_ptr<MeasurementService::Stub> stub = MeasurementService::NewStub(channel);
 
   // random
@@ -31,10 +41,14 @@ int main(int argc, char** argv) {
 
   while(true) {
 
+    const double weight = dist(mt);
+    const double humidity = dist(mt);
+    const double color = dist(mt);
+
     Measurement m;
-    m.set_weight(dist(mt));
-    m.set_humidity(dist(mt));
-    m.set_color(dist(mt));
+    m.set_weight(weight);
+    m.set_humidity(humidity);
+    m.set_color(color);
 
     OK ok;
 
@@ -45,6 +59,7 @@ int main(int argc, char** argv) {
         << ":" << status.error_details() << std::endl;
     }		
 
+    printf("Weight: %f, Humidity: %f, Color: %f\n", weight, humidity, color);
     sleep(1);  
   }
 
