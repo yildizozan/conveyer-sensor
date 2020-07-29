@@ -12,7 +12,7 @@
 #include <grpcpp/create_channel.h>
 #include <grpcpp/security/credentials.h>
 
-#include "measurement.grpc.pb.h"
+#include "position.grpc.pb.h"
 
 using std::cout;
 using std::endl;
@@ -32,34 +32,34 @@ int main(int argc, char** argv) {
   string connectionString = std::getenv("GRPC_SERVER");
   
   auto channel = grpc::CreateChannel(connectionString, grpc::InsecureChannelCredentials());
-  std::unique_ptr<MeasurementService::Stub> stub = MeasurementService::NewStub(channel);
+  std::unique_ptr<PositionService::Stub> stub = PositionService::NewStub(channel);
 
   // random
   std::random_device rd;
   std::mt19937 mt(rd());
-  std::uniform_real_distribution<double> dist(0.0, 1.0);
+  std::uniform_real_distribution<double> dist(0.6, 1.0);
 
   while(true) {
 
-    const double weight = dist(mt);
-    const double humidity = dist(mt);
-    const double color = dist(mt);
+    const double x = 0.0;
+    const double y = dist(mt);
+    const double z = 0.0;
 
-    Measurement m;
-    m.set_weight(weight);
-    m.set_humidity(humidity);
-    m.set_color(color);
+    Position p;
+    p.set_x(x);
+    p.set_y(y);
+    p.set_z(z);
 
     OK ok;
 
     ClientContext context;
-    Status status = stub->NewMeasurement(&context, m, &ok);
+    Status status = stub->NewPosition(&context, p, &ok);
     if (!status.ok()) {
       std::cout << "RPC Failure: " << status.error_message()
         << ":" << status.error_details() << std::endl;
     }		
 
-    printf("Weight: %f, Humidity: %f, Color: %f\n", weight, humidity, color);
+    printf("x: %f, y: %f, z: %f\n", x, y, z);
     sleep(1);  
   }
 

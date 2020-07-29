@@ -11,7 +11,7 @@ GRPC_CPP_PLUGIN_PATH ?= `which $(GRPC_CPP_PLUGIN)`
 
 all: client
 
-client: measurement.pb.o measurement.grpc.pb.o client.o
+client: position.pb.o position.grpc.pb.o client.o
 	$(CXX) $^ $(LDFLAGS) -o $@
 
 %.grpc.pb.cc: %.proto
