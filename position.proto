@@ -1,5 +1,7 @@
 syntax = "proto3";
 
+package position;
+
 service PositionService {
   rpc NewPosition (Position) returns (OK) {
   }
