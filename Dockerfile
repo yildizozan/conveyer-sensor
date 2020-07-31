@@ -6,4 +6,4 @@ COPY . .
 
 RUN make
 
-CMD ["./client"]
+CMD ["./main"]
