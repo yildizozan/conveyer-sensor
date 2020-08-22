@@ -46,8 +46,8 @@ int main(int argc, char** argv) {
     while(true) {
 
         const double x = 0.0;
-        const double y = dist(mt);
-        const double z = 0.0;
+        const double y = 0.0;
+        const double z = dist(mt);
 
         Position p;
         p.set_x(x);
